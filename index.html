@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sandesh Shingankar — 3D Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#050508;--surface:#0d0d14;--accent:#7c6dfa;--accent2:#f05a7e;--accent3:#00e5ff;
+    --text:#f0f0f8;--muted:#6b6b85;--card:#12121d;--border:#1e1e30;
+  }
+  body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;perspective:1000px;}
+  
+  /* Navigation */
+  nav{position:fixed;top:0;width:100%;z-index:100;padding:1.5rem 3rem;display:flex;justify-content:space-between;backdrop-filter:blur(20px);background:rgba(5,5,8,0.8);border-bottom:1px solid var(--border)}
+  .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .nav-links{display:flex;gap:2rem;list-style:none}
+  .nav-links a{text-decoration:none;color:var(--muted);font-size:0.9rem;text-transform:uppercase;transition:0.3s}
+  .nav-links a:hover{color:var(--accent3)}
+
+  /* Hero Section */
+  #hero{min-height:100vh;display:flex;align-items:center;padding:0 6rem;gap:4rem;background:radial-gradient(circle at 80% 20%, rgba(124,109,250,0.15), transparent);}
+  .hero-content{flex:1}
+  h1{font-family:'Syne',sans-serif;font-size:clamp(3rem,6vw,5rem);line-height:1;margin-bottom:2rem}
+  .highlight{color:var(--accent3);text-shadow: 0 0 30px rgba(0,229,255,0.3)}
+  .photo-frame{width:350px;height:450px;border-radius:20px;overflow:hidden;border:1px solid var(--border);transform:rotateY(-15deg) rotateX(5deg);box-shadow: 20px 20px 50px rgba(0,0,0,0.5);transition: 0.5s;}
+  .photo-frame:hover{transform:rotateY(0deg) scale(1.05);}
+  .photo-frame img{width:100%;height:100%;object-fit:cover}
+
+  /* Interactive Tech Stack */
+  .section-title{text-align:center;margin-bottom:3rem;font-family:'Syne';font-size:2.5rem}
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));gap:2rem;padding:0 6rem}
+  .skill-card{background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:20px;cursor:pointer;transition:0.4s;transform-style:preserve-3d;text-align:center}
+  .skill-card:hover{border-color:var(--accent3);transform:translateZ(20px) translateY(-10px);box-shadow:0 20px 40px rgba(0,229,255,0.2)}
+  .skill-card.active{background:linear-gradient(145deg, var(--card), var(--border));border-color:var(--accent3);box-shadow:0 0 20px rgba(0,229,255,0.4)}
+  .skill-card h3{font-family:'Syne';margin-top:1rem;color:var(--accent3)}
+
+  /* Dynamic Content Area (Projects & Certs) */
+  #dynamic-content{padding:5rem 6rem;min-height:80vh;background:var(--surface)}
+  .content-layout{display:grid;grid-template-columns:1fr 1.5fr;gap:3rem;height:600px}
+  
+  .project-list{overflow-y:auto;padding-right:1rem}
+  .project-item{background:var(--card);border:1px solid var(--border);padding:1.5rem;border-radius:15px;margin-bottom:1rem;cursor:pointer;transition:0.3s}
+  .project-item:hover, .project-item.active{border-color:var(--accent2);transform:translateX(10px)}
+  
+  .preview-pane{background:var(--bg);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:relative}
+  .preview-pane iframe{width:100%;height:100%;border:none}
+  .preview-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:2rem;color:var(--muted)}
+
+  /* Certs Grid (Filtered) */
+  .certs-container{display:grid;grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));gap:1.5rem;margin-top:2rem}
+  .cert-mini-card{background:var(--card);padding:1rem;border-radius:10px;border-left:4px solid var(--accent);display:none} /* Filtered by JS */
+
+  .btn{padding:1rem 2rem;border-radius:50px;text-decoration:none;font-weight:700;display:inline-block;transition:0.3s;border:none;cursor:pointer}
+  .btn-primary{background:var(--accent);color:white}
+  .btn-primary:hover{transform:scale(1.1);box-shadow:0 0 20px var(--accent)}
+
+  @media (max-width:1024px){
+    #hero{flex-direction:column;text-align:center;padding:6rem 2rem}
+    .content-layout{grid-template-columns:1fr;height:auto}
+    .preview-pane{height:400px}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">SS</div>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#skills">Experience</a></li>
+    <li><a href="#projects">Work</a></li>
+    <li><a href="mailto:sandeshshingankar8@gmail.com">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-content">
+    <div style="color:var(--accent);letter-spacing:3px;margin-bottom:1rem">HELLO WORLD</div>
+    <h1>Sandesh<br><span class="highlight">Shingankar</span></h1>
+    <p style="font-size:1.2rem;color:var(--muted);max-width:600px;margin-bottom:2rem">
+      Crafting the future through 3D interfaces, full-stack systems, and data-driven intelligence.
+    </p>
+    <div class="hero-buttons">
+      <a href="#skills" class="btn btn-primary">Explore My Stack</a>
+    </div>
+  </div>
+  <div class="photo-frame">
+    <img src="sandesh.png" alt="Sandesh">
+  </div>
+</section>
+
+<section id="skills" style="padding:5rem 0">
+  <h2 class="section-title">My <span>Command Center</span></h2>
+  <div class="skills-grid">
+    <div class="skill-card active" onclick="filterDomain('uiux', this)">
+      <div style="font-size:3rem">🎨</div>
+      <h3>UI/UX</h3>
+      <p style="font-size:0.8rem;color:var(--muted)">Design Thinking & Interaction</p>
+    </div>
+    <div class="skill-card" onclick="filterDomain('app', this)">
+      <div style="font-size:3rem">📱</div>
+      <h3>App Dev</h3>
+      <p style="font-size:0.8rem;color:var(--muted)">Mobile-First Experiences</p>
+    </div>
+    <div class="skill-card" onclick="filterDomain('web', this)">
+      <div style="font-size:3rem">💻</div>
+      <h3>Web Dev</h3>
+      <p style="font-size:0.8rem;color:var(--muted)">Scalable Full-Stack Systems</p>
+    </div>
+    <div class="skill-card" onclick="filterDomain('data', this)">
+      <div style="font-size:3rem">📊</div>
+      <h3>Data Science</h3>
+      <p style="font-size:0.8rem;color:var(--muted)">ML & Predictive Analytics</p>
+    </div>
+  </div>
+</section>
+
+<section id="dynamic-content">
+  <h2 id="domain-title" style="margin-bottom:2rem;font-family:'Syne'">Work In <span style="color:var(--accent2)">UI/UX</span></h2>
+  
+  <div class="content-layout">
+    <div class="project-list" id="project-container">
+      </div>
+
+    <div class="preview-pane">
+        <div id="iframe-loader" class="preview-placeholder">
+            <div>
+                <h3>Live Preview</h3>
+                <p>Select a project to view the website / prototype</p>
+            </div>
+        </div>
+        <iframe id="project-iframe" src="" title="Preview"></iframe>
+    </div>
+  </div>
+
+  <h3 style="margin-top:4rem;font-family:'Syne'">Relevant <span style="color:var(--accent3)">Certificates</span></h3>
+  <div class="certs-container" id="cert-container">
+    </div>
+</section>
+
+<script>
+  // Comprehensive Data Object
+  const data = {
+    uiux: {
+      title: "UI/UX Design",
+      projects: [
+        { name: "Portfolio Redesign", desc: "A 3D perspective experimental UI.", link: "https://figma.com" },
+        { name: "SaaS Dashboard", desc: "High-fidelity fintech prototype.", link: "#" }
+      ],
+      certs: ["Google UX Design Professional", "Figma Advanced Component Mastery"]
+    },
+    app: {
+      title: "App Development",
+      projects: [
+        { name: "Society Manager", desc: "Residential management via Flutter.", link: "#" },
+        { name: "Fitness Tracker", desc: "Kotlin-based health monitoring.", link: "#" }
+      ],
+      certs: ["Android Dev Certificate", "Firebase Fundamentals"]
+    },
+    web: {
+      title: "Web Development",
+      projects: [
+        { name: "Vector.ioST Website", desc: "Startup landing page with Node.js.", link: "https://vectoriost.vercel.app" },
+        { name: "IgniteTimeline", desc: "Git history visualization tool.", link: "#" }
+      ],
+      certs: ["L&T Front-End Developer", "Web Dev Bootcamp 2026"]
+    },
+    data: {
+      title: "Data Science",
+      projects: [
+        { name: "GFM Grievance AI", desc: "82% accuracy in feedback categorization.", link: "#" },
+        { name: "Trading Predictor", desc: "Stock market analysis using AI.", link: "#" }
+      ],
+      certs: ["Code With Harry Data Science", "Python Using AI Workshop"]
+    }
+  };
+
+  function filterDomain(domain, element) {
+    // UI Updates
+    document.querySelectorAll('.skill-card').forEach(c => c.classList.remove('active'));
+    element.classList.add('active');
+    
+    const domainData = data[domain];
+    document.getElementById('domain-title').innerHTML = `Work in <span style="color:var(--accent2)">${domainData.title}</span>`;
+    
+    // Update Projects
+    const pContainer = document.getElementById('project-container');
+    pContainer.innerHTML = '';
+    domainData.projects.forEach((p, idx) => {
+      const div = document.createElement('div');
+      div.className = 'project-item';
+      div.innerHTML = `<h4>${p.name}</h4><p style="font-size:0.8rem;color:var(--muted)">${p.desc}</p>`;
+      div.onclick = () => loadIframe(p.link, div);
+      pContainer.appendChild(div);
+      if(idx === 0) loadIframe(p.link, div); // Load first by default
+    });
+
+    // Update Certs
+    const cContainer = document.getElementById('cert-container');
+    cContainer.innerHTML = '';
+    domainData.certs.forEach(c => {
+      const div = document.createElement('div');
+      div.className = 'cert-mini-card';
+      div.style.display = 'block';
+      div.innerHTML = `<strong>${c}</strong>`;
+      cContainer.appendChild(div);
+    });
+  }
+
+  function loadIframe(url, element) {
+    document.querySelectorAll('.project-item').forEach(i => i.classList.remove('active'));
+    element.classList.add('active');
+    
+    const iframe = document.getElementById('project-iframe');
+    const loader = document.getElementById('iframe-loader');
+    
+    if(url === "#") {
+        iframe.style.display = 'none';
+        loader.style.display = 'flex';
+        loader.innerHTML = "<div><h3>Source Private</h3><p>This project's live link is restricted.</p></div>";
+    } else {
+        loader.style.display = 'none';
+        iframe.style.display = 'block';
+        iframe.src = url;
+    }
+  }
+
+  // Tilt Effect Logic
+  document.addEventListener('mousemove', (e) => {
+    const x = (window.innerWidth / 2 - e.pageX) / 50;
+    const y = (window.innerHeight / 2 - e.pageY) / 50;
+    document.querySelectorAll('.skill-card').forEach(card => {
+        card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+    });
+  });
+
+  // Initialize
+  window.onload = () => {
+    filterDomain('uiux', document.querySelector('.skill-card'));
+  };
+</script>
+
+</body>
+</html>
